@@ -15,11 +15,15 @@ promptinit
 zstyle ':vcs_info:*' check-for-changes true
 zstyle ':vcs_info:*' unstagedstr '*'   # display this when there are unstaged changes
 zstyle ':vcs_info:*' stagedstr '+'  # display this when there are staged changes
-zstyle ':vcs_info:*' actionformats '[%b%|%a%c%u%]%f'
-zstyle ':vcs_info:*' formats ':%b%c%u%f'
+zstyle ':vcs_info:*' actionformats '‹%b%|%a%c%u%› %f'
+zstyle ':vcs_info:*' formats '‹%b%c%u› %f'
 
 
 zstyle ':vcs_info:(sv[nk]|bzr):*' branchformat '%b%F{1}:%F{3}%r'
 precmd () { vcs_info }
 
-PROMPT='[%n@%m %~${vcs_info_msg_0_}] %{$reset_color%}'
+if [ $UID -eq 0 ]; then CARETCOLOR="red"; else CARETCOLOR="blue"; fi
+
+PROMPT='%m %{${fg_bold[blue]}%}:: %{$reset_color%}%{${fg[green]}%}%3~ %{$fg[yellow]%}${vcs_info_msg_0_}%{$reset_color%}%{${fg_bold[$CARETCOLOR]}%}»%{${reset_color}%} '
+
+RPS1="${return_code}"
